@@ -1,0 +1,130 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Class Monitor Vote</title>
+</head>
+<body style="margin: 0">
+    <h1 style="text-align:center;">Class Monitor Vote</h1>
+    <h4 style="text-align:center;font-weight:normal;">Total Votes</h4>
+    <form onsubmit="handleFormSubmit(event)">
+        <label for="studentName">Student Name:</label>
+        <input type="text" name="studentName" id="studentName"/>
+        <label for="chooseMonitor">Choose Monitor:</label>
+        <select id="chooseMonitor" name="chooseMonitor">
+            <option value="suresh">Suresh</option>
+            <option value="deepank">Deepank</option>
+            <option value="abhik">Abhik</option>
+        </select>
+        <button type="submit">Vote</button>
+        <h1>Suresh</ul><br>
+        <h4 style="font-weight:normal;">Total</h4><br>
+        <ul class="sureshVote"></ul>
+        <h1>Deepank</ul><br>
+        <h4 style="font-weight:normal;">Total</h4><br>
+        <ul class="deepankVote"></ul>
+        <h1>Abhik</h1>
+        <h4 style="font-weight:normal;">Total</h4><br>
+        <ul class="abhikVote"></ul>
+    </form>
+</body>
+<script>
+    function handleFormSubmit(event)
+    {
+
+    }
+</script>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Class Monitor Vote</title>
+</head>
+<body style="margin: 0">
+    <h1 style="text-align:center;">Class Monitor Vote</h1>
+    <h4 id="totalVotes" style="text-align:center;font-weight:normal;">Total Votes: 0</h4>
+    <form onsubmit="handleFormSubmit(event)">
+        <label for="studentName">Student Name:</label>
+        <input type="text" name="studentName" id="studentName"/>
+        <label for="chooseMonitor">Choose Monitor:</label>
+        <select id="chooseMonitor" name="chooseMonitor">
+            <option value="suresh">Suresh</option>
+            <option value="deepank">Deepank</option>
+            <option value="abhik">Abhik</option>
+        </select>
+        <button type="submit">Vote</button>
+    </form>
+
+    <h1>Suresh</h1>
+    <h4 style="font-weight:normal;">Total Votes: <span id="sureshCount">0</span></h4>
+    <ul id="sureshList"></ul>
+
+    <h1>Deepank</h1>
+    <h4 style="font-weight:normal;">Total Votes: <span id="deepankCount">0</span></h4>
+    <ul id="deepankList"></ul>
+
+    <h1>Abhik</h1>
+    <h4 style="font-weight:normal;">Total Votes: <span id="abhikCount">0</span></h4>
+    <ul id="abhikList"></ul>
+
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get selected monitor and student name
+            var selectedMonitor = document.getElementById('chooseMonitor').value;
+            var studentName = document.getElementById('studentName').value;
+
+            if (studentName.trim() === '') {
+                alert('Please enter a student name.');
+                return;
+            }
+
+            // Update total votes
+            var totalVotesElement = document.getElementById('totalVotes');
+            var currentTotalVotes = parseInt(totalVotesElement.innerText.split(': ')[1]);
+            totalVotesElement.innerText = 'Total Votes: ' + (currentTotalVotes + 1);
+
+            // Update specific monitor's count
+            var monitorCountElement = document.getElementById(selectedMonitor + 'Count');
+            var currentCount = parseInt(monitorCountElement.innerText);
+            monitorCountElement.innerText = currentCount + 1;
+
+            // Add student's name to the respective list
+            var list = document.getElementById(selectedMonitor + 'List');
+            var listItem = document.createElement('li');
+            listItem.textContent = studentName;
+
+            // Add delete button to the list item
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function() {
+                // Update total count and specific monitor count after deletion
+                currentTotalVotes = parseInt(totalVotesElement.innerText.split(': ')[1]);
+                currentCount = parseInt(monitorCountElement.innerText);
+
+                currentTotalVotes--;
+                totalVotesElement.innerText = 'Total Votes: ' + currentTotalVotes;
+
+                currentCount--;
+                monitorCountElement.innerText = currentCount;
+
+                // Remove the list item from the list
+                list.removeChild(listItem);
+            };
+            listItem.appendChild(deleteButton);
+
+            // Append the list item to the list
+            list.appendChild(listItem);
+
+            // Clear input fields
+            document.getElementById('studentName').value = '';
+        }
+    </script>
+</body>
+</html>
