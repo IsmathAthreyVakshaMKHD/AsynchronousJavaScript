@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE  html>
+<html lang='en'>
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
     <title>Class Monitor Vote</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="margin: 0">
+<body>
     <h1 style="text-align:center;">Class Monitor Vote</h1>
     <h4 style="text-align:center;" id="totalVotes">Total Votes: 0</h4>
     <form onsubmit="handleFormSubmit(event)">
         <label for="studentName">Student Name:</label>
-        <input type="text" name="studentName" id="studentName"/>
-        <label for="chooseMonitor">Choose Monitor:</label>
+        <input type="text" id="studentName" name="studentName">
+        <label for="chooseMonitor">Choose Monitor</label>
         <select id="chooseMonitor" name="chooseMonitor">
             <option value="suresh">Suresh</option>
             <option value="deepank">Deepank</option>
@@ -22,13 +22,13 @@
         <button type="submit">Vote</button>
     </form>
     <h1>Suresh</h1>
-    <h4 >Total Votes: <span id="sureshCount">0</span></h4>
-    <ul id="sureshList"></ul>
+    <h4>Total:<span id="sureshCount">0</span></h4>
+    <ul  id="sureshList"></ul>
     <h1>Deepank</h1>
-    <h4>Total Votes: <span id="deepankCount">0</span></h4>
+    <h4>Total:<span id="deepankCount">0</span></h4>
     <ul id="deepankList"></ul>
     <h1>Abhik</h1>
-    <h4>Total Votes: <span id="abhikCount">0</span></h4>
+    <h4>Total:<span id="abhikCount">0</span></h4>
     <ul id="abhikList"></ul>
     <script src="Axios.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>

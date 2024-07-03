@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Inventory</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #e6f2ff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 300px;
+            margin: 20px auto;
+            border: 2px solid #0056b3;
+        }
+        .form-container h2 {
+            text-align: center;
+            color: #0056b3;
+            margin-top: 0;
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-container label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-container input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #bbd6ff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-container button {
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .form-container button:hover {
+            background-color: #003d82;
+        }
+        #inventoryList {
+            background-color: #fff5e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            list-style-type: none;
+        }
+        .inventory-item {
+            background-color: #fff;
+            border: 1px solid #ffd699;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .inventory-item-info {
+            flex-grow: 1;
+        }
+        .inventory-item-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .buy-button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .buy-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="handleFormSubmit(event)">
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" name="itemName">
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description">
+        <label for="price">Price</label>
+        <input type="text" id="price" name="price">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity">
+        <button type="submit">Add Item</button>
+    </form>
+    <ul id="inventoryList"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
+    <script>
+        const apiBaseUrl = "https://crudcrud.com/api/a21f8a7d87ca4432a47d5b7d4a635ea8/inventoryList";
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const itemName = document.getElementById('itemName').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            const inventoryData = { itemName, description, price, quantity };
+            axios.post(apiBaseUrl, inventoryData)
+                .then(result => {
+                    displayData(result.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function displayData(inventoryData) {
+            const inventoryList = document.getElementById('inventoryList');
+            const listItem = document.createElement('li');
+            listItem.id = `item-${inventoryData._id}`;
+            listItem.textContent = `${inventoryData.itemName}, ${inventoryData.description}, ${inventoryData.price}, ${inventoryData.quantity}`;
+            
+            const buyOneButton = document.createElement('button');
+            buyOneButton.textContent = 'Buy One';
+            buyOneButton.addEventListener('click', () => updateQuantity(inventoryData._id, 1));
+
+            const buyTwoButton = document.createElement('button');
+            buyTwoButton.textContent = 'Buy Two';
+            buyTwoButton.addEventListener('click', () => updateQuantity(inventoryData._id, 2));
+
+            const buyThreeButton = document.createElement('button');
+            buyThreeButton.textContent = 'Buy Three';
+            buyThreeButton.addEventListener('click', () => updateQuantity(inventoryData._id, 3));
+
+            listItem.appendChild(buyOneButton);
+            listItem.appendChild(buyTwoButton);
+            listItem.appendChild(buyThreeButton);
+            inventoryList.appendChild(listItem);
+        }
+
+        function updateQuantity(id, quantityToBuy) {
+            axios.get(`${apiBaseUrl}/${id}`)
+                .then(response => {
+                    const inventoryData = response.data;
+                    const newQuantity = inventoryData.quantity - quantityToBuy;
+                    
+                    if (newQuantity < 0) {
+                        alert('Not enough quantity available');
+                        return;
+                    }
+                    
+                    const updatedData = { ...inventoryData, quantity: newQuantity };
+                    delete updatedData._id;  // Remove _id field before sending PUT request
+
+                    axios.put(`${apiBaseUrl}/${id}`, updatedData)
+                        .then(() => {
+                            const listItem = document.getElementById(`item-${id}`);
+                            listItem.childNodes[0].textContent = `${updatedData.itemName}, ${updatedData.description}, ${updatedData.price}, ${newQuantity}`;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function loadData() {
+            axios.get(apiBaseUrl)
+                .then(response => {
+                    const inventoryList = document.getElementById('inventoryList');
+                    inventoryList.innerHTML = ''; // Clear the list before reloading
+                    response.data.forEach(inventoryData => {
+                        displayData(inventoryData);
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
