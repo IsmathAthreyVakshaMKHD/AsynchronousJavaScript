@@ -1,4 +1,4 @@
-const apiBaseUrl="https://crudcrud.com/api/521914c7a90c461a9b03cc19cc008030/votes";
+const apiBaseUrl="https://crudcrud.com/api/d065cfd162e84ef68feb13e1c35e9eba/votes";
 
 // Function to handle form submission and save vote data
 function handleFormSubmit(event) {
@@ -24,6 +24,7 @@ function handleFormSubmit(event) {
             updateVoteCounts();
         })
         .catch(error => console.log(error));
+        document.getElementById('studentName').value = '';
 }
 
 // Function to display vote data on the screen
