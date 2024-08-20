@@ -1,4 +1,4 @@
-const apiBaseUrl="https://crudcrud.com/api/d065cfd162e84ef68feb13e1c35e9eba/votes";
+const apiBaseUrl="https://crudcrud.com/api/9b4880c340ba4efdb89ddb6fd2a3a3ee/votes";
 
 // Function to handle form submission and save vote data
 function handleFormSubmit(event) {
@@ -16,7 +16,6 @@ function handleFormSubmit(event) {
         studentName: studentName,
         monitor: selectedMonitor
     };
-
     // Send POST request to save the vote data
     axios.post(apiBaseUrl, voteData)
         .then(response => {
@@ -75,6 +74,7 @@ function displayVote(voteData) {
 
 // Function to load votes from the server and display them
 function loadVotes() {
+    
     axios.get(apiBaseUrl)
         .then(response => {
             response.data.forEach(voteData => {
@@ -90,7 +90,7 @@ function updateVoteCounts() {
     var sureshCountElement = document.getElementById('sureshCount');
     var deepankCountElement = document.getElementById('deepankCount');
     var abhikCountElement = document.getElementById('abhikCount');
-
+    
     axios.get(apiBaseUrl)
         .then(response => {
             const votes = response.data;

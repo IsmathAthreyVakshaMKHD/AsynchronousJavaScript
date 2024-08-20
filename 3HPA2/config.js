@@ -1,4 +1,4 @@
-const apiBaseUrl = "https://crudcrud.com/api/a21f8a7d87ca4432a47d5b7d4a635ea8/inventoryList";
+const apiBaseUrl = "https://crudcrud.com/api/9b4880c340ba4efdb89ddb6fd2a3a3ee/inventoryList";
 function handleFormSubmit(event) {
     event.preventDefault();
     const itemName = document.getElementById('itemName').value;
@@ -77,7 +77,7 @@ function loadData() {
                 displayData(inventoryData);
             });
         })
-        .catch(error =A> {
+        .catch(error => {
             console.log(error);
         });
 }

@@ -1,4 +1,4 @@
-const apiBaseUrl="https://crudcrud.com/api/ae219a73054e4094a2800bd5e243d934/inventoryList";
+const apiBaseUrl="https://crudcrud.com/api/cf53362d527149f585827729275ad224/inventoryList";
 function handleFormSubmit(event)
 {
     event.preventDefault();
@@ -55,7 +55,7 @@ function updateQuantity(inventoryData, quantity) {
     }
     
     const updatedData = { ...inventoryData, quantity: newQuantity };
-
+    console.log(inventoryData._id);
     axios.put(`${apiBaseUrl}/${inventoryData._id}`, updatedData)
     .then(response => {
         // Update the display
